@@ -1,5 +1,12 @@
+var fs = require("fs");
+var file = "/var/www/html/secure_login_php/auth.sqlite";
+var exists = fs.existsSync(file);
+
+var sqlite3 = require("sqlite3").verbose();
+var sqlite_db = new sqlite3.Database(file);
+
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/quickstack');
+mongoose.connect('mongodb://127.0.0.1:27017/quickstack');
 
 var genericSchema = new mongoose.Schema({}, { strict: false });
 
@@ -76,91 +83,314 @@ router.use(session({
   name: 'PHPSESSID',
   secret: 'node.js rules',
   resave: false,
-  saveUninitialized: false,
-  cookie: {
-    path     : '/',  
-    domain   : 'c9users.io',  
-    httpOnly : true,  
-    maxAge   : 1000*60*60*24*30*12  
-  }
+  saveUninitialized: false
 }));
 
 router.use(express.static(path.resolve(__dirname, 'client')));
-var sess;
+
+// router.use(function(req, res, next) {
+//   console.log(req.session);
+//   //if (!req.session || !req.session.logged_in || !(req.session.logged_in===true)) {
+//   //   console.log("redirect to login page.");
+//   //   res.writeHead(200, {Location: "http://128.4.27.23:8080/secure_login_php/"});
+//   //   res.end();
+//   // } else {
+//     res.cookie("username", req.session.username);
+//     res.cookie("roleid", req.session.roleid);
+//   //}
+//   //next();
+// });
+
 router.use(function(req, res, next){
-  console.log(req.session);
-  sess = req.session;
-  req.session.username = "fewf";
-  if(session===null){
-    console.log("session is null, request: "+req.query.sid);
-    if(req.query && req.query.sid){
-      session_id = req.query.sid;
-      var keyPrefix = "PHPREDIS_SESSION:";
-      // redisClient.exists(keyPrefix+req.query.sid, function(err, reply){
-      //   if(reply!=1) {
-      //     next("User not logged in.");
-      //   } else {
-      //     res.cookie("sid", req.query.sid);
-      //   }
-      // });
-      
-      redisClient.get(keyPrefix+req.query.sid, function(err, reply){
-        if (err) {
-          console.log(err);
-          next("Session not exist.");
-        }
-        console.log('raw data:',reply); // show raw data
-        if(reply!=null){
-          session = PHPUnserialize.unserializeSession(reply); // decode session data
-          console.log("session: "+session.username+";"+session.roleid); 
-          //if (session.logged_in===true) {
-          //  res.sendFile("ng_index.html", {root: __dirname+"/client"});
-          //}
-          //res.cookie("sid", session_id);
-          //res.sendFile('ng_index.html', { root: path.join(__dirname, './client') });
-        }
-      });
-    } 
-  } 
+  if (req.session && req.session.logged_in===true) {
+    res.cookie("username", req.session.username);
+    res.cookie("roleid", req.session.roleid);
+  } else {
+    console.log("process exit");
+    process.exit(1);
+  }
   next();
 });
 
+var sql;
+
 router.get('/:collection', function(req, res){
-  console.log(req.params);
+  //console.log(req.session);
+  //console.log("Get collection: "+req.params.collection +" with role id "+req.session.roleid);
   var collection = req.params.collection;
-  findDocs(collection, {}, function(docs){
-    res.json(docs);
-  });
+  //admin: all, moderator: author and posts, author: posts, reader: posts and comments
+  //console.log();
+
+  switch (req.session.roleid) {
+    case '1': 
+      if (collection==="users") {
+        //console.log("admin request users");
+        sql = "select username, rolename from users join roles on users.roleid=roles.roleid;";
+        sqlite_db.all(sql, function(err, all){
+          if (!err) {
+            res.json(all);
+          };
+        });
+      }else {
+        findDocs(collection, {}, function(docs){
+          res.json(docs);
+        });
+      }
+      break;
+    case '2':
+      if (collection==="users" || collection==="topics" || collection==="articles" || collection==="favicon.ico") {
+        if (collection=="users") {
+          sql = "select username, rolename from users join roles on users.roleid=roles.roleid;";
+          sqlite_db.all(sql, function(err, all){
+            if (!err) {
+              res.json(all);
+            };
+          });
+        } else {
+          findDocs(collection, {}, function(docs){
+            res.json(docs);
+          });
+        }
+      }else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+    case '3':
+      if (collection=="articles" || collection=="favicon.ico") {
+        findDocs(collection, {}, function(docs){
+          res.json(docs);
+        });
+      }else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+    case '4':
+      //console.log("reader operations");
+      if (collection=='topics' || collection=="articles" || collection=="comments" || collection=="favicon.ico") {
+        findDocs(collection, {}, function(docs){
+          res.json(docs);
+        });
+      } else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+
+    default:
+      res.json({ permissionerror: '1' });
+      break;
+
+  }
+  
+  
 })
 .get('/:collection/:id', function(req, res){
   var collection = req.params.collection;
   var id = req.params.id;
-  findDocs(collection, {_id: id}, function(docs){
-    res.json(docs);
-  });
+  //admin: all, moderator: author and posts, author: posts, reader: posts and comments
+  // findDocs(collection, {_id: id}, function(docs){
+  //   res.json(docs);
+  // });
+  switch (req.session.roleid) {
+    case '1': 
+      findDocs(collection, {_id: id}, function(docs){
+        res.json(docs);
+      });
+      break;
+    case '2':
+      if (collection==="users" || collection==="topics" || collection==="articles" || collection==="favicon.ico") {
+        findDocs(collection, {_id: id}, function(docs){
+          res.json(docs);
+        });
+      }else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+    case '3':
+      if (collection=="articles" || collection=="favicon.ico") {
+        findDocs(collection, {_id: id}, function(docs){
+          res.json(docs);
+        });
+      }else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+    case '4':
+      //console.log("reader operations");
+      if (collection=='topics' || collection=="articles" || collection=="comments" || collection=="favicon.ico") {
+        findDocs(collection, {_id: id}, function(docs){
+          res.json(docs);
+        });
+      }else {
+        res.json({ permissionerror: '1' });
+      }
+      break;
+
+    default:
+      res.json({ permissionerror: '1' });
+      break;
+
+  }
+
 })
 .post('/:collection', function(req, res){
   var collection = req.params.collection;
-  createDoc(req.body, collection, function(document){
-    res.json(document);
-  });
+  //admin: all, moderator: author and posts, author: posts, reader: comments
+  // createDoc(req.body, collection, function(document){
+  //   res.json(document);
+  // });
+
+  switch (req.session.roleid) {
+    case '1': 
+      createDoc(req.body, collection, function(document){
+        res.json(document);
+      });
+      break;
+    case '2':
+      if (collection==="users" || collection==="topics" || collection==="articles" || collection==="favicon.ico") {
+        createDoc(req.body, collection, function(document){
+          res.json(document);
+        });
+      };
+      break;
+    case '3':
+      if (collection=="articles" || collection=="favicon.ico") {
+        createDoc(req.body, collection, function(document){
+          res.json(document);
+        });
+      };
+      break;
+    case '4':
+      console.log("reader operations");
+      if (collection=="comments" || collection=="favicon.ico") {
+        createDoc(req.body, collection, function(document){
+          res.json(document);
+        });
+      };
+      break;
+
+    default:
+      break;
+
+  }
+
 })
 .put('/:collection/:id', function(req, res){
   var collection = req.params.collection;
+  //admin: all, moderator: author and posts, author: posts, reader: comments
   var id = req.params.id;
-  updateDoc(collection, id, req.body, function(document){
-    res.json(document);
-  });
+  // updateDoc(collection, id, req.body, function(document){
+  //   res.json(document);
+  // });
+
+  switch (req.session.roleid) {
+    case '1': 
+      if (collection=="users") {
+        sql = "update users set roleid=5 where username=?;";
+        sqlite_db.run(sql, id, function(err, row){
+          if (err){
+              console.err(err);
+              res.status(500);
+          }
+          else {
+              res.status(202);
+          }
+          res.end();
+        });
+      } else {
+        updateDoc(collection, id, req.body, function(document){
+          res.json(document);
+        });
+      }
+      break;
+    case '2':
+      if (collection==="users" || collection==="topics" || collection==="articles" || collection==="favicon.ico") {
+        if (collection=="users") {
+          sql = "update users set roleid=5 where username=?;";
+          sqlite_db.run(sql, id, function(err, row){
+            if (err){
+                console.err(err);
+                res.status(500);
+            }
+            else {
+                res.status(202);
+            }
+            res.end();
+          });
+        } else {
+          updateDoc(collection, id, req.body, function(document){
+            res.json(document);
+          });
+        }
+      };
+      break;
+    case '3':
+      if (collection=="articles" || collection=="favicon.ico") {
+       updateDoc(collection, id, req.body, function(document){
+          res.json(document);
+        });
+      };
+      break;
+    case '4':
+      //console.log("reader operations");
+      if (collection=="comments" || collection=="favicon.ico") {
+        updateDoc(collection, id, req.body, function(document){
+          res.json(document);
+        });
+      };
+      break;
+
+    default:
+      break;
+
+  }
+
+
 })
 .delete('/:collection/:id', function(req, res){
   var collection = req.params.collection;
+  //admin: all, moderator: author and posts, author: posts, reader: comments
   var id = req.params.id;
-  deleteDoc(collection, id, function(document){
-    res.json(document);
-  });
+  // deleteDoc(collection, id, function(document){
+  //   res.json(document);
+  // });
+
+switch (req.session.roleid) {
+    case '1': 
+      deleteDoc(collection, id, function(document){
+        res.json(document);
+      });
+      break;
+    case '2':
+      if (collection==="topics" || collection==="articles" || collection==="favicon.ico") {
+        deleteDoc(collection, id, function(document){
+          res.json(document);
+        });
+      };
+      break;
+    case '3':
+      if (collection=="articles" || collection=="favicon.ico") {
+       deleteDoc(collection, id, function(document){
+          res.json(document);
+        });
+      };
+      break;
+    case '4':
+      //console.log("reader operations");
+      if (collection=="comments" || collection=="favicon.ico") {
+        deleteDoc(collection, id, function(document){
+          res.json(document);
+        });
+      };
+      break;
+
+    default:
+      break;
+
+  }
+
 });
 
-server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
+server.listen(3000, process.env.IP || "0.0.0.0", function(){
   var addr = server.address();
-  console.log("Quick stack backend listening at", addr.address + ":" + addr.port);
+  console.log("Node Server listening at", addr.address + ":" + addr.port);
 });

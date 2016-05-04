@@ -1,0 +1,305 @@
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected
+4
+{ collection: 'characters' }
+4
+{ collection: 'characters' }
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+4
+4
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+4
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+4
+{ collection: 'topics' }
+4
+{ collection: 'articles' }
+4
+{ collection: 'comments' }
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected
+Get collection: favicon.ico with role id 5
+Get collection: users with role id 5
+Get collection: topics with role id 5
+Get collection: articles with role id 5
+Get collection: comments with role id 5
+Get collection: users with role id 5
+Get collection: topics with role id 5
+Get collection: articles with role id 5
+Get collection: comments with role id 5
+Get collection: favicon.ico with role id 5
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected
+Get collection: favicon.ico with role id 5
+Get collection: users with role id 5
+Get collection: topics with role id 5
+Get collection: articles with role id 5
+Get collection: comments with role id 5
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: users with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: comments with role id 1
+Get collection: articles with role id 1
+Get collection: users with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+_http_outgoing.js:346
+    throw new Error('Can\'t set headers after they are sent.');
+    ^
+
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:346:11)
+    at ServerResponse.header (/home/hnw322-5/workspace/node_php_login/node_modules/express/lib/response.js:718:10)
+    at ServerResponse.send (/home/hnw322-5/workspace/node_php_login/node_modules/express/lib/response.js:163:12)
+    at ServerResponse.json (/home/hnw322-5/workspace/node_php_login/node_modules/express/lib/response.js:249:15)
+    at /home/hnw322-5/workspace/node_php_login/server.js:338:13
+    at Query.<anonymous> (/home/hnw322-5/workspace/node_php_login/server.js:44:7)
+    at /home/hnw322-5/workspace/node_php_login/node_modules/mongoose/node_modules/kareem/index.js:177:19
+    at /home/hnw322-5/workspace/node_php_login/node_modules/mongoose/node_modules/kareem/index.js:109:16
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+    at process._tickCallback (internal/process/next_tick.js:98:9)
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: users with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 2
+Get collection: users with role id 2
+Get collection: topics with role id 2
+Get collection: articles with role id 2
+Get collection: comments with role id 2
+Get collection: favicon.ico with role id 2
+Get collection: users with role id 2
+Get collection: topics with role id 2
+Get collection: articles with role id 2
+Get collection: comments with role id 2
+Get collection: favicon.ico with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: users with role id 1
+Get collection: users with role id 1
+Get collection: topics with role id 1
+Get collection: articles with role id 1
+Get collection: comments with role id 1
+Get collection: favicon.ico with role id 1
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected
+[33m[nodemon] 1.9.2[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node ./server.js`[39m
+events.js:154
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+    at Error (native)
+Node Server listening at 0.0.0.0:3000
+Redis connected

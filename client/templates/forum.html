@@ -1,0 +1,75 @@
+<h2 ng-model="username">Welcome, {{username}}</h3>
+
+<hr><hr>
+
+<h2>Users</h2>
+<span ng-if="user_nopermission === true">No Permission.</span>
+<ul>
+  <li ng-repeat="user in users">
+    <span>{{user.username}}:</span> 
+    <span>{{user.rolename}}</span>
+    <button type="btn" ng-click="revokeUser(user)">Revoke</button> 
+  </li>
+</ul>
+
+<hr>
+
+<h2>Topics</h2>
+<span ng-if="topic_nopermission === true">No Permission.</span>
+<ul>
+  <li ng-repeat="topic in topics">
+    <span>{{topic.username}}:</span><span>{{topic.topicname}}</span> 
+    <button type="btn" ng-click="destroyTopic(topic)">destroy</button> 
+    <button type="btn" ng-click="toggleEditMode(this)">Edit</button>
+    <form ng-submit="toggleEditMode(this); saveTopic(topic)" ng-show="this.editMode || false">
+      <button type="submit">Save changes</button>
+      <input type="text" ng-model="this.topic.topicname"></input>
+    </form>
+  </li>
+</ul>
+<form ng-submit="addTopic()">
+    <button type="submit">Add a topic</button>
+    <input type="text" ng-model="topicname" placeholder="Name your topic"></input>
+</form>
+
+<hr>
+
+<h2>Posts</h2>
+<span ng-if="article_nopermission === true">No Permission.</span>
+<ul>
+  <li ng-repeat="article in articles">
+    <span>{{article.username}}:</span><span>{{article.articlename}}</span> 
+    <button type="btn" ng-click="destroyArticle(article)">destroy</button> 
+    <button type="btn" ng-click="toggleEditMode(this)">Edit</button>
+    <form ng-submit="toggleEditMode(this); saveArticle(article)" ng-show="this.editMode || false">
+      <button type="submit">Save changes</button>
+      <input type="text" ng-model="this.article.articlename"></input>
+    </form>
+  </li>
+</ul>
+<form ng-submit="addArticle()">
+    <button type="submit">Add a article</button>
+    <input type="text" ng-model="articlename" placeholder="Name your article"></input>
+</form>
+
+<hr>
+
+<h2>Comments</h2>
+<span ng-if="comment_nopermission === true">No Permission.</span>
+<ul>
+  <li ng-repeat="comment in comments">
+    <span>{{comment.username}}:</span><span>{{comment.commentname}}</span> 
+    <button type="btn" ng-click="destroyComment(comment)">destroy</button> 
+    <button type="btn" ng-click="toggleEditMode(this)">Edit</button>
+    <form ng-submit="toggleEditMode(this); saveComment(comment)" ng-show="this.editMode || false">
+      <button type="submit">Save changes</button>
+      <input type="text" ng-model="this.comment.commentname"></input>
+    </form>
+  </li>
+</ul>
+<form ng-submit="addComment()">
+    <button type="submit">Add a comment</button>
+    <input type="text" ng-model="commentname" placeholder="Name your comment"></input>
+</form>
+
+<hr>
